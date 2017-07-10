@@ -1,0 +1,23 @@
+{
+  "name": "chinese-rhymer",
+  "version": "0.0.1",
+  "description": "A tool to quickly find a rhyming Chinese word with a given one.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkqs90/chinese-rhymer.git"
+  },
+  "keywords": [],
+  "author": "pkqs90 <pkqs90@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pkqs90/chinese-rhymer/issues"
+  },
+  "homepage": "https://github.com/pkqs90/chinese-rhymer#readme",
+  "dependencies": {
+    "pinyin": "^2.8.3"
+  }
+}
