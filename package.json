@@ -1,11 +1,21 @@
 {
   "name": "chinese-rhymer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A tool to quickly find a rhyming Chinese word with a given one.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "./dist/index.js",
+  "bin": {
+    "rhyme": "./bin/rhyme.js"
   },
+  "scripts": {
+    "build": "npm run clean && babel ./src -d ./dist",
+    "clean": "rm -rf dist",
+    "lint": "eslint ./src",
+    "test": "echo \"Sorry bro, too lazy to write tests.\" && exit 1",
+    "prepublish": "npm run lint && npm run clean && npm run build"
+  },
+  "pre-commit": [
+    "lint"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pkqs90/chinese-rhymer.git"
@@ -18,6 +28,16 @@
   },
   "homepage": "https://github.com/pkqs90/chinese-rhymer#readme",
   "dependencies": {
+    "commander": "^2.11.0",
     "pinyin": "^2.8.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0"
   }
 }

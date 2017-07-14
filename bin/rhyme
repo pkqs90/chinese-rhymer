@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var commander = require('commander');
+
+commander.
+  version(require('../package').version).
+  usage('[options] 汉字').
+  option('-v, --version', 'output the version number').
+  parse(process.argv);
+
+if (commander.list) {
+  process.exit()
+}
+
+// output help and exit if no args found
+if (commander.args.length === 0) {
+  commander.help();
+}
+
+var rhyme = require("../");
+
+console.log(commander.args.join(" "));
+
+console.log(rhyme(commander.args.join(" ")));
