@@ -2,13 +2,18 @@ import fs from 'fs';
 import path from 'path';
 import pinyin from 'pinyin';
 
+import { isRhyme } from './rhymeHelper';
+
 const dataPath = path.resolve(__dirname, '../data/webdict_with_freq.txt');
 const frequencyLimit = 5000;
 
+// This returns an array of array of spellings (because of multi-sounded words)
 const getSpelling = word => pinyin(word, { style: pinyin.STYLE_TONE2 });
 
+// This returns an array of array of consonants (because of multi-sounded words)
 const getConsonant = word => pinyin(word, { style: pinyin.STYLE_INITIALS });
 
+// This returns an array of compound vowels.
 const getCompoundVowels = word => (
   getSpelling(word).map((spellingArr, index) => {
     const spelling = spellingArr[0];
@@ -17,19 +22,21 @@ const getCompoundVowels = word => (
   })
 );
 
+const getPinyin = word => (
+  word.split('').map(cur => ({
+    consonants: getConsonant(cur)[0][0],
+    compoundVowels: getCompoundVowels(cur)[0],
+  }))
+);
+
 let v0;
 
-const isSingleWordRhyme = (candidateFrequency, candidateWord) => {
-  const v1 = getCompoundVowels(candidateWord);
-  return v0[v0.length - 1] === v1[v1.length - 1];
-};
-
 const check = (candidateFrequency, candidateWord) => (
-  candidateFrequency >= frequencyLimit && isSingleWordRhyme(candidateFrequency, candidateWord)
+  candidateFrequency >= frequencyLimit && isRhyme(v0, getPinyin(candidateWord))
 );
 
 const getRhyme = (word) => {
-  v0 = getCompoundVowels(word);
+  v0 = getPinyin(word);
 
   const contents = fs.readFileSync(dataPath, 'utf8').toString().split('\n');
   const resultArr = [];
