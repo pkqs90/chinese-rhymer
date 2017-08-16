@@ -1,5 +1,3 @@
-const fetch = require('isomorphic-fetch')
-
 module.exports = {
   exportPathMap() {
     return {
@@ -16,7 +14,7 @@ module.exports = {
         return true;
       }
     });
-
     return cfg;
-  }
+  },
+  assetPrefix: '/chinese-rhymer/'
 };
