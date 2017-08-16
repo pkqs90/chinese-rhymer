@@ -1,10 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import _ from 'lodash';
 import pinyin from 'pinyin';
-
 import { isRhyme } from './rhymeHelper';
 
-const dataPath = path.resolve(__dirname, '../data/webdict_with_freq.txt');
+const webdictWithFreq = require('../data/webdict_with_freq.json');
+
 const frequencyLimit = 5000;
 
 // This returns an array of array of spellings (because of multi-sounded words)
@@ -38,23 +37,14 @@ const check = (candidateFrequency, candidateWord) => (
 const getRhyme = (word) => {
   v0 = getPinyin(word);
 
-  const contents = fs.readFileSync(dataPath, 'utf8').toString().split('\n');
-  const resultArr = [];
+  const resultArr = _.reduce(webdictWithFreq, (acc, candidateFrequency, candidateWord) =>
+    (check(candidateFrequency, candidateWord) ?
+      acc.concat([{ candidateWord, candidateFrequency }]) : acc)
+  , []);
 
-  contents.forEach((line) => {
-    const [candidateWord, candidateFrequencyStr] = line.split(' ');
-    const candidateFrequency = parseInt(candidateFrequencyStr, 10);
-    if (check(candidateFrequency, candidateWord)) {
-      resultArr.push({
-        frequency: candidateFrequency,
-        word: candidateWord,
-      });
-    }
-  });
+  resultArr.sort((a, b) => (b.candidateFrequency - a.candidateFrequency));
 
-  resultArr.sort((a, b) => (b.frequency - a.frequency));
-
-  return resultArr.reduce((acc, cur) => acc.concat([cur.word]), []);
+  return resultArr.reduce((acc, cur) => acc.concat([cur.candidateWord]), []);
 };
 
 module.exports = getRhyme;

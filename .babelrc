@@ -1,3 +1,7 @@
 {
-  "presets": ["env"]
+  "presets": [
+    "env",
+    "next/babel",
+    "stage-0"
+  ]
 }
