@@ -5,3 +5,9 @@ dist
 node_modules
 
 npm-debug.log
+
+# nextjs static output directory
+out
+
+# nextjs directory
+.next
