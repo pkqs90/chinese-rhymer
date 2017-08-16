@@ -10,7 +10,7 @@ const removeTone = (v) => {
 const isRhymeVowel = (u0, u1) => {
   const v0 = removeTone(u0 > u1 ? u1 : u0);
   const v1 = removeTone(u0 < u1 ? u1 : u0);
-  return (v0 === v1) ||
+  return (u0 === u1) ||
     (v0[0] === 'an' && v1[0] === 'uan' && v0[1] === v1[1]);
 };
 
