@@ -8,3 +8,6 @@ npm-debug.log
 
 # nextjs static output directory
 out
+
+# nextjs directory
+.next
