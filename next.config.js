@@ -16,5 +16,5 @@ module.exports = {
     });
     return cfg;
   },
-  assetPrefix: '/chinese-rhymer/'
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/chinese-rhymer/' : ''
 };

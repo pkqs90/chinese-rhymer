@@ -9,11 +9,11 @@
   "scripts": {
     "build": "npm run clean && babel ./src -d ./dist",
     "clean": "rm -rf dist",
-    "lint": "eslint ./src",
+    "lint": "eslint ./src ./pages",
     "test": "echo \"Sorry bro, too lazy to write tests.\" && exit 1",
     "prepublish": "npm run lint && npm run clean && npm run build",
     "start": "next dev",
-    "export": "next build && next export"
+    "export": "NODE_ENV=production next build && NODE_ENV=production next export"
   },
   "pre-commit": [
     "lint"
@@ -30,13 +30,16 @@
   },
   "homepage": "https://github.com/pkqs90/chinese-rhymer#readme",
   "dependencies": {
+    "babel-eslint": "^7.2.3",
     "commander": "^2.11.0",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "next": "^3.0.3",
     "pinyin": "^2.8.3",
     "prettyjson": "^1.2.1",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-json-pretty": "^1.6.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

@@ -27,9 +27,10 @@ var results = rhyme(commander.args.join(''), {
 });
 
 var outputResult = {};
+
 results.forEach(function(result) {
   outputResult[result.word] = result.frequency;
-})
+});
 
 var outputOptions = {
 };

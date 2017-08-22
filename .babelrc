@@ -2,6 +2,7 @@
   "presets": [
     "env",
     "next/babel",
-    "stage-0"
+    "react",
+    "stage-0",
   ]
 }
