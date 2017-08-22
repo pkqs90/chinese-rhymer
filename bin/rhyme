@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 var commander = require('commander');
+var prettyjson = require('prettyjson');
 
-commander.
-  version(require('../package').version).
-  usage('[options] 汉字').
-  option('-v, --version', 'output the version number').
-  parse(process.argv);
+commander
+  .version(require('../package').version)
+  .usage('[options] 词语')
+  .option('--min, --minFrequency <n>', 'the minimum frequency threshold (default 5000)', parseInt)
+  .option('--max, --maxFrequency <n>', 'the minimum frequency threshold (default Number.MAX_SAFE_INTEGER = 9007199254740991)', parseInt)
+  .parse(process.argv);
 
 if (commander.list) {
   process.exit()
@@ -19,6 +21,17 @@ if (commander.args.length === 0) {
 
 var rhyme = require("../");
 var word = commander.args.join(" ");
-var result = rhyme(commander.args.join(" "));
+var results = rhyme(commander.args.join(''), {
+  minFrequency: commander.minFrequency,
+  maxFrequency: commander.maxFrequency
+});
 
-console.log(result.join(" "));
+var outputResult = {};
+results.forEach(function(result) {
+  outputResult[result.word] = result.frequency;
+})
+
+var outputOptions = {
+};
+
+console.log(prettyjson.render(outputResult, outputOptions));
