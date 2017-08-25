@@ -6,6 +6,7 @@ var prettyjson = require('prettyjson');
 commander
   .version(require('../package').version)
   .usage('[options] 词语')
+  .option('--num, --numberOfRhymes <n>', 'the number of characters that rhymes', parseInt)
   .option('--min, --minFrequency <n>', 'the minimum frequency threshold (default 5000)', parseInt)
   .option('--max, --maxFrequency <n>', 'the minimum frequency threshold (default Number.MAX_SAFE_INTEGER = 9007199254740991)', parseInt)
   .parse(process.argv);
@@ -23,7 +24,8 @@ var rhyme = require("../");
 var word = commander.args.join(" ");
 var results = rhyme(commander.args.join(''), {
   minFrequency: commander.minFrequency,
-  maxFrequency: commander.maxFrequency
+  maxFrequency: commander.maxFrequency,
+  numberOfRhymes: commander.numberOfRhymes,
 });
 
 var outputResult = {};

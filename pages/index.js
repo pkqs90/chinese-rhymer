@@ -13,12 +13,14 @@ export default class extends Component {
       isWorking: false,
       minFreq: '',
       maxFreq: '',
+      numOfRhymes: 1,
       outputRhymes: {},
     };
 
-    this.onWordChange = this.onWordChange.bind(this);
+    this.onWordChange = ::this.onWordChange;
     this.onMinFrequencyChange = ::this.onMinFrequencyChange;
     this.onMaxFrequencyChange = ::this.onMaxFrequencyChange;
+    this.onNumOfRhymesChange = ::this.onNumOfRhymesChange;
     this.onButtonClick = ::this.onButtonClick;
   }
 
@@ -40,6 +42,12 @@ export default class extends Component {
     });
   }
 
+  onNumOfRhymesChange(event) {
+    this.setState({
+      numOfRhymes: _.trim(event.target.value),
+    });
+  }
+
   onButtonClick() {
     let errorMessage = '';
     if (this.state.isWorking) {
@@ -58,11 +66,12 @@ export default class extends Component {
 
     const minFrequency = trans(this.state.minFreq);
     const maxFrequency = trans(this.state.maxFreq);
+    const numberOfRhymes = trans(this.state.numOfRhymes);
 
     this.setState({ isWorking: true });
 
     const results = getRhyme(this.state.inputWord, {
-      minFrequency, maxFrequency,
+      minFrequency, maxFrequency, numberOfRhymes,
     });
     const outputRhymes = {};
     results.forEach((result) => {
@@ -78,6 +87,7 @@ export default class extends Component {
         输入词语 <input type="text" onChange={this.onWordChange} /><br />
         最小词频 (默认 5000) <input type="text" onChange={this.onMinFrequencyChange} /><br />
         最大词频 (默认无上限) <input type="text" onChange={this.onMaxFrequencyChange} /><br />
+        押数 (默认 1)<input type="text" onChange={this.onNumOfRhymesChange} /><br />
 
         <button onClick={this.onButtonClick} style={{ width: '100px', height: '20px' }}>Go</button>
         <div>{ this.state.errorMessage }</div><br />

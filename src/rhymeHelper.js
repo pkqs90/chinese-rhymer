@@ -26,10 +26,24 @@ const isSingleWordRhyme = (pinyin0, pinyin1) => {
   return isRhymeVowel(v01, v11) && isRhymeConsonant(v00, v10);
 };
 
-const isRhyme = (pinyin1, pinyin2) => {
-  const v0 = pinyin1[pinyin1.length - 1];
-  const v1 = pinyin2[pinyin2.length - 1];
-  return isSingleWordRhyme(v0, v1);
+const isRhyme = (pinyin0, pinyin1, options) => {
+  const {
+    numberOfRhymes,
+  } = options;
+
+  if (pinyin0.length < numberOfRhymes || pinyin1.length < numberOfRhymes) {
+    return false;
+  }
+
+  for (let i = 0; i < numberOfRhymes; i += 1) {
+    const v0 = pinyin0[pinyin0.length - 1 - i];
+    const v1 = pinyin1[pinyin1.length - 1 - i];
+    if (!isSingleWordRhyme(v0, v1)) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 module.exports = {

@@ -4,6 +4,7 @@ import { isRhyme } from './rhymeHelper';
 
 const webdictWithFreq = require('../data/webdict_with_freq.json');
 
+const defaultNumberOfRhymes = 1;
 const defaultMinFrequency = 5000;
 const defaultMaxFrequency = Number.MAX_SAFE_INTEGER;
 
@@ -38,11 +39,19 @@ const getPinyin = word => (
 let pinyin0;
 
 // Checks whether candidate word returns an array of pinyin.
-const check = (candidateFrequency, candidateWord, minFrequency, maxFrequency) => (
-  candidateFrequency >= minFrequency &&
-  candidateFrequency <= maxFrequency &&
-  isRhyme(pinyin0, getPinyin(candidateWord))
-);
+const check = (candidateFrequency, candidateWord, options) => {
+  const {
+    minFrequency = defaultMinFrequency,
+    maxFrequency = defaultMaxFrequency,
+    numberOfRhymes = defaultNumberOfRhymes,
+  } = options;
+
+  return (
+    candidateFrequency >= minFrequency &&
+    candidateFrequency <= maxFrequency &&
+    isRhyme(pinyin0, getPinyin(candidateWord), { numberOfRhymes })
+  );
+};
 
 // This returns the rhymes for the given word.
 // [ { word: '好', frequency: 2180925 },
@@ -50,12 +59,10 @@ const check = (candidateFrequency, candidateWord, minFrequency, maxFrequency) =>
 //   { word: '不少', frequency: 400942 },
 //   { word: '找', frequency: 387910 }, ...]
 const getRhyme = (word, options = {}) => {
-  const { minFrequency = defaultMinFrequency, maxFrequency = defaultMaxFrequency } = options;
-
   pinyin0 = getPinyin(word);
 
   const resultArr = _.reduce(webdictWithFreq, (acc, candidateFrequency, candidateWord) =>
-    (check(candidateFrequency, candidateWord, minFrequency, maxFrequency) ?
+    (check(candidateFrequency, candidateWord, options) ?
       acc.concat([{ candidateWord, candidateFrequency }]) : acc)
   , []);
 
